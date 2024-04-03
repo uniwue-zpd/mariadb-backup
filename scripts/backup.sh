@@ -1,6 +1,12 @@
-#!/bin/sh
-DATE=$(date +%F)
-mkdir -p /backup/${DATE}
-echo "[$(date +%T)] Dumping database ${DB_NAME} into /backup/${DATE}/dump.sql" >> /mysql_backup.log
-mariadb-dump --user=$DB_USER --password=$DB_PASSWORD --lock-tables --databases $DB_NAME --log-errors=/mysql_backup.log > /backup/${DATE}/dump.sql
-echo "[$(date +%T)] Database dump finished" >> /mysql_backup.log
+#!/bin/bash
+DATE=$(date +"%F")
+NOW=$(date +"%H%M%S")
+MARIADB_DUMP=$(which mariadb-dump)
+GZIP=$(which gzip)
+BACKUP_FOLDER=/backup/${DATE}
+
+[ ! -d "${BACKUP_FOLDER}" ] && mkdir --parents ${BACKUP_FOLDER}
+FILE=${BACKUP_FOLDER}/backup-${NOW}.sql
+
+echo "[$(date +%T)] Dumping database ${MYSQL_DATABASE} into ${FILE}..." >> /mysql_backup.log
+${MARIADB_DUMP} -h ${MYSQL_HOST} -u ${MYSQL_USER} -p"${MYSQL_PASSWORD}" --lock-tables --databases ${MYSQL_DATABASE} > $FILE
