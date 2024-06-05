@@ -16,7 +16,8 @@ services:
       - ./db_data:/var/lib/mysql
   backup:
     environment:
-      MYSQL_DATABASE: database
+      MYSQL_HOST: "${DB_HOST}"
+      MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_USER: "${DB_USER}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
@@ -30,3 +31,6 @@ services:
     links:
       - database
 ```
+
+## Restoring backups
+To restore a backup simply mount the backup as volume of the main database container to `/docker-entrypoint-initdb.d/datadump.sql`.
