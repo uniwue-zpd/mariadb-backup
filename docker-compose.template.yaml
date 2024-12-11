@@ -1,14 +1,13 @@
 services:
   backup:
     environment:
-      MYSQL_HOST: '${DB_HOST}'
+      MYSQL_HOST: "${DB_HOST:-database}"
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_USER: "${DB_USER}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       CRON_INTERVAL: "${DB_BACKUP_CRON:-00 23 * * *}"
     entrypoint: [ "sh", "/scripts/run.sh" ]
     volumes:
-      - ./db_data:/var/lib/mysql
       - ./backup:/backup
     image: uniwuezpd/mariadb-backup:11.1.4
