@@ -22,6 +22,11 @@ A lightweight Docker container for automated MariaDB database backups. The conta
 | CRON_INTERVAL | Backup schedule in cron format | 00 23 * * * |
 
 ## Example Usage
+### Install from the command line
+`$ docker pull ghcr.io/uniwue-zpd/mariadb-backup:11.8.2`
+### Use as base image in Dockerfile:
+`FROM ghcr.io/uniwue-zpd/mariadb-backup:11.8.2`
+### Use in Docker Compose setup:
 ```yaml
 services:
     database:
