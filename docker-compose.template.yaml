@@ -16,4 +16,4 @@ services:
 
     volumes:
       - ./backup:/backup
-    image: uniwuezpd/mariadb-backup:11.1.4
+    image: uniwuezpd/mariadb-backup:11.8.2

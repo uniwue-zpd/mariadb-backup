@@ -1,36 +1,24 @@
 # mariadb-backup
-Simple Docker container for periodically creating MariaDB backups.
+
+A lightweight Docker container for automated MariaDB database backups. The container runs a cron job to create periodic database dumps.
+
+## Features
+
+- Automated backups using cron
+- Configurable backup schedule
+- Compatible with MariaDB 11.8.2 (LTS)
+- Built-in health monitoring
+- Daily backups organized in date-based folders
+- Simple integration with existing MariaDB containers
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| MYSQL_HOST | MariaDB host | database |
+| MYSQL_DATABASE | Database name to backup | - |
+| MYSQL_USER | Database user | - |
+| MYSQL_PASSWORD | Database password | - |
+| CRON_INTERVAL | Backup schedule in cron format | 00 23 * * * |
 
 ## Example Usage
-```
-version: '3'
-services:
-  database:
-    image: mariadb:11.1.4
-    environment:
-      MYSQL_DATABASE: "${DB_NAME}"
-      MYSQL_USER: "${DB_USER}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-    volumes:
-      - ./db_data:/var/lib/mysql
-  backup:
-    environment:
-      MYSQL_HOST: "${DB_HOST}"
-      MYSQL_DATABASE: "${DB_NAME}"
-      MYSQL_USER: "${DB_USER}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      CRON_INTERVAL: "0 23 * * *"
-    entrypoint: [ "sh", "/scripts/run.sh" ]
-    volumes:
-      - ./backup:/backup
-    image: uniwuezpd/mariadb-backup:11.1.4
-    depends_on:
-      - database
-    links:
-      - database
-```
-
-## Restoring backups
-To restore a backup simply mount the backup as volume of the main database container to `/docker-entrypoint-initdb.d/datadump.sql`.
