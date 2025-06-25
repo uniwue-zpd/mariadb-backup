@@ -8,6 +8,12 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       CRON_INTERVAL: "${DB_BACKUP_CRON:-00 23 * * *}"
     entrypoint: [ "sh", "/scripts/run.sh" ]
+    healthcheck:
+      test: [ "CMD", "pgrep", "cron" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+
     volumes:
       - ./backup:/backup
     image: uniwuezpd/mariadb-backup:11.1.4
